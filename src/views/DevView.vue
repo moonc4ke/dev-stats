@@ -1,4 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted, reactive } from 'vue';
+import { devStats } from '../mockData/git-stats';
+
+let devData = reactive({});
+
+onMounted(() => {
+  devData = devStats;
+  console.log(devData);
+});
+</script>
 
 <template>
   <div>
