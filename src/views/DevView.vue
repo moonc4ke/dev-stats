@@ -5,9 +5,32 @@ import { devStats } from '../mockData/git-stats';
 let devData = reactive({});
 
 onMounted(() => {
-  devData = devStats;
+  devData = transformContributions(devStats as IDevStatsData);
   console.log(devData);
 });
+
+interface IDevStatsData {
+  commits: {
+    [key: string]: {
+      [key: string]: number;
+    };
+  };
+}
+
+const transformContributions = (data: IDevStatsData) => {
+  return Object.entries(data.commits).map(([key, element]) => {
+    const date = new Date(key);
+    const contributionCount = Object.values(element).reduce(
+      (acc, commitCount) => acc + commitCount,
+      0
+    );
+
+    return {
+      date: date,
+      count: contributionCount,
+    };
+  });
+};
 </script>
 
 <template>
