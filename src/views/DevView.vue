@@ -1,11 +1,18 @@
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { devStats } from '../mockData/git-stats';
+import { CalendarHeatmap } from 'vue3-calendar-heatmap';
 
-let devData = reactive({});
+interface IDevData {
+  date: Date;
+  count: number;
+}
+[];
+
+let devData = reactive([] as unknown as IDevData);
 
 onMounted(() => {
-  devData = transformContributions(devStats as IDevStatsData);
+  devData = transformContributions(devStats);
   console.log(devData);
 });
 
@@ -39,7 +46,10 @@ const transformContributions = (data: IDevStatsData) => {
     <div>Location</div>
     <div>Motto</div>
     <div>Current Level</div>
-    <div>Contributions calendar</div>
+    <calendar-heatmap
+      :values="transformContributions(devStats)"
+      :end-date="Date.now()"
+    />
     <div>Achievements</div>
     <div>Main tech stack</div>
   </div>
