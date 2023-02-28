@@ -4,16 +4,20 @@ import { devStats } from '../mockData/git-stats';
 import { CalendarHeatmap } from 'vue3-calendar-heatmap';
 
 interface IDevData {
-  date: Date;
+  date: string;
   count: number;
 }
 [];
 
-let devData = reactive([] as unknown as IDevData);
+let devData = ref([
+  {
+    date: new Date(),
+    count: 0,
+  },
+]);
 
 onMounted(() => {
-  devData = transformContributions(devStats);
-  console.log(devData);
+  devData.value = transformContributions(devStats);
 });
 
 interface IDevStatsData {
@@ -46,10 +50,7 @@ const transformContributions = (data: IDevStatsData) => {
     <div>Location</div>
     <div>Motto</div>
     <div>Current Level</div>
-    <calendar-heatmap
-      :values="transformContributions(devStats)"
-      :end-date="Date.now()"
-    />
+    <calendar-heatmap :values="devData" :end-date="Date.now()" />
     <div>Achievements</div>
     <div>Main tech stack</div>
   </div>
